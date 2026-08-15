@@ -3,7 +3,7 @@ import { api } from './api.js';
 export const categorias = $state([]);
 export const carrito = $state([]);
 export let busqueda = $state('');
-export const toast = $state(null);
+export const toast = $state({ mensaje: null, tipo: 'success' });
 
 let toastTimer = null;
 
