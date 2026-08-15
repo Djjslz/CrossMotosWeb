@@ -22,6 +22,21 @@
   let categoriaActiva = $state('');
   let busquedaActiva = $state('');
 
+  const cache = new Map();
+
+  function cacheKey() {
+    const q = new URLSearchParams();
+    if (categoriaActiva) q.set('categoria', categoriaActiva);
+    if (busquedaActiva) q.set('busqueda', busquedaActiva);
+    if (ordenes[orden]?.sort) {
+      q.set('sort', ordenes[orden].sort);
+      q.set('order', ordenes[orden].order);
+    }
+    q.set('page', pagination.page);
+    q.set('limit', pagination.limit);
+    return q.toString();
+  }
+
   function syncFromQuery() {
     categoriaActiva = query.categoria || '';
     busquedaActiva = query.busqueda || '';
@@ -30,6 +45,14 @@
   async function cargar() {
     cargando = true;
     error = null;
+    const key = cacheKey();
+    if (cache.has(key)) {
+      const cached = cache.get(key);
+      productos = cached.data;
+      pagination = cached.pagination;
+      cargando = false;
+      return;
+    }
     const paramsReq = {
       page: pagination.page,
       limit: pagination.limit,
@@ -42,6 +65,7 @@
     }
     try {
       const data = await getProductos(paramsReq);
+      cache.set(key, { data: data.data, pagination: data.pagination });
       productos = data.data;
       pagination = data.pagination;
     } catch (err) {

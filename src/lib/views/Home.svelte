@@ -1,23 +1,20 @@
 <script>
   import { onMount } from 'svelte';
-  import { navigate, getDestacados } from '../../lib/router.js';
-  import { categorias, cargarCategorias } from '../store.svelte.js';
+  import { navigate } from '../../lib/router.js';
+  import {
+    categorias,
+    destacados,
+    cargarCategorias,
+    cargarDestacados,
+  } from '../store.svelte.js';
   import ProductCard from '../components/ProductCard.svelte';
   import CategoryNav from '../components/CategoryNav.svelte';
 
-  let destacados = $state([]);
   let cargando = $state(true);
-  let error = $state(null);
 
   onMount(async () => {
-    if (categorias.length === 0) await cargarCategorias();
-    try {
-      destacados = await getDestacados();
-    } catch (err) {
-      error = err.message;
-    } finally {
-      cargando = false;
-    }
+    await Promise.all([cargarCategorias(), cargarDestacados()]);
+    cargando = false;
   });
 </script>
 
@@ -96,8 +93,6 @@
         </div>
       {/each}
     </div>
-  {:else if error}
-    <div class="error-box">{error}</div>
   {:else if destacados.length === 0}
     <div class="empty-state">
       <p>No hay productos destacados aún.</p>
@@ -105,7 +100,7 @@
     </div>
   {:else}
     <div class="product-grid">
-      {#each destacados.slice(0, 8) as producto (producto._id)}
+      {#each destacados as producto (producto._id)}
         <ProductCard {producto} />
       {/each}
     </div>

@@ -20,10 +20,10 @@
     route = parseHash();
   }
 
-  onMount(async () => {
+  onMount(() => {
     actualizarRuta();
     window.addEventListener('hashchange', actualizarRuta);
-    await cargarCategorias();
+    cargarCategorias();
   });
 </script>
 
