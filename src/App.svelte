@@ -1,89 +1,63 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from './assets/vite.svg'
-  import heroImg from './assets/hero.png'
-  import Counter from './lib/Counter.svelte'
+  import { onMount } from 'svelte';
+  import { parseHash } from './lib/router.js';
+  import { cargarCategorias, toast } from './lib/store.js';
+  import Navbar from './lib/components/Navbar.svelte';
+  import Footer from './lib/components/Footer.svelte';
+  import CartDrawer from './lib/components/CartDrawer.svelte';
+  import Home from './lib/views/Home.svelte';
+  import Catalog from './lib/views/Catalog.svelte';
+  import ProductDetail from './lib/views/ProductDetail.svelte';
+
+  let route = $state({ path: '/', query: {} });
+  let cartOpen = $state(false);
+
+  function actualizarRuta() {
+    route = parseHash();
+  }
+
+  onMount(async () => {
+    actualizarRuta();
+    window.addEventListener('hashchange', actualizarRuta);
+    await cargarCategorias();
+  });
 </script>
 
-<section id="center">
-  <div class="hero">
-    <img src={heroImg} class="base" width="170" height="179" alt="" />
-    <img src={svelteLogo} class="framework" alt="Svelte logo" />
-    <img src={viteLogo} class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/App.svelte</code> and save to test <code>HMR</code></p>
-  </div>
-  <Counter />
-</section>
+<Navbar onOpenCart={() => (cartOpen = true)} />
 
-<div class="ticks"></div>
+<main>
+  {#if route.path === '/'}
+    <Home />
+  {:else if route.path === '/catalogo'}
+    <Catalog query={route.query} />
+  {:else if route.path.startsWith('/producto/')}
+    <ProductDetail slug={route.path.split('/')[2]} />
+  {:else}
+    <section class="container section">
+      <div class="empty-state">
+        <p>Página no encontrada</p>
+        <a class="btn btn-primary" href="#/">Volver al inicio</a>
+      </div>
+    </section>
+  {/if}
+</main>
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true">
-      <use href="/icons.svg#documentation-icon"></use>
-    </svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank" rel="noreferrer">
-          <img class="logo" src={viteLogo} alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://svelte.dev/" target="_blank" rel="noreferrer">
-          <img class="button-icon" src={svelteLogo} alt="" />
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true">
-      <use href="/icons.svg#social-icon"></use>
-    </svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li>
-        <a href="https://github.com/vitejs/vite" target="_blank" rel="noreferrer">
-          <svg class="button-icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#github-icon"></use>
-          </svg>
-          GitHub
-        </a>
-      </li>
-      <li>
-        <a href="https://chat.vite.dev/" target="_blank" rel="noreferrer">
-          <svg class="button-icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#discord-icon"></use>
-          </svg>
-          Discord
-        </a>
-      </li>
-      <li>
-        <a href="https://x.com/vite_js" target="_blank" rel="noreferrer">
-          <svg class="button-icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#x-icon"></use>
-          </svg>
-          X.com
-        </a>
-      </li>
-      <li>
-        <a href="https://bsky.app/profile/vite.dev" target="_blank" rel="noreferrer">
-          <svg class="button-icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#bluesky-icon"></use>
-          </svg>
-          Bluesky
-        </a>
-      </li>
-    </ul>
-  </div>
-</section>
+<Footer />
 
-<div class="ticks"></div>
-<section id="spacer"></section>
+<CartDrawer open={cartOpen} onClose={() => (cartOpen = false)} />
+
+{#if toast.mensaje}
+  <div class="toast {toast.tipo}">
+    {#if toast.tipo === 'success'}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
+    {:else}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4M12 16h.01" />
+      </svg>
+    {/if}
+    {toast.mensaje}
+  </div>
+{/if}
