@@ -1,9 +1,17 @@
 <script>
   import { formatCOP } from '../format.js';
-  import { carrito, cambiarCantidad, totalCarrito, cantidadTotal } from '../store.js';
-  import { showToast } from '../store.js';
+  import {
+    carrito,
+    cambiarCantidad,
+    getTotalCarrito,
+    getCantidadTotal,
+    showToast,
+  } from '../store.svelte.js';
 
   let { open, onClose = () => {} } = $props();
+
+  let totalCarrito = $derived(getTotalCarrito());
+  let cantidadTotal = $derived(getCantidadTotal());
 
   function finalizar() {
     showToast('¡Gracias! Esto es una demo de la tienda.', 'success');

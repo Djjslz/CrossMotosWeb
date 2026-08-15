@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { navigate, getProductos } from '../../lib/router.js';
-  import { categorias, cargarCategorias } from '../../lib/store.js';
+  import { categorias, cargarCategorias } from '../store.svelte.js';
   import ProductCard from '../components/ProductCard.svelte';
 
   let { query = {} } = $props();

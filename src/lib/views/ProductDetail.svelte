@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { getProducto, navigate } from '../../lib/router.js';
   import { formatCOP } from '../../lib/format.js';
-  import { agregarAlCarrito } from '../../lib/store.js';
+  import { agregarAlCarrito } from '../store.svelte.js';
   import ProductCard from '../components/ProductCard.svelte';
 
   let { slug } = $props();

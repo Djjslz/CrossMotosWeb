@@ -2,14 +2,9 @@ import { api } from './api.js';
 
 export const categorias = $state([]);
 export const carrito = $state([]);
-export let busqueda = $state('');
 export const toast = $state({ mensaje: null, tipo: 'success' });
 
 let toastTimer = null;
-
-export function setBusqueda(q) {
-  busqueda = q;
-}
 
 export function showToast(mensaje, tipo = 'success') {
   toast.mensaje = mensaje;
@@ -50,8 +45,10 @@ export function cambiarCantidad(productoId, delta) {
   }
 }
 
-export const totalCarrito = $derived(
-  carrito.reduce((acc, i) => acc + i.producto.precio * i.cantidad, 0)
-);
+export function getTotalCarrito() {
+  return carrito.reduce((acc, i) => acc + i.producto.precio * i.cantidad, 0);
+}
 
-export const cantidadTotal = $derived(carrito.reduce((acc, i) => acc + i.cantidad, 0));
+export function getCantidadTotal() {
+  return carrito.reduce((acc, i) => acc + i.cantidad, 0);
+}

@@ -1,15 +1,15 @@
 <script>
   import { navigate } from '../router.js';
-  import { cantidadTotal, setBusqueda } from '../store.js';
+  import { getCantidadTotal } from '../store.svelte.js';
 
   let { onOpenCart = () => {} } = $props();
 
-  let query = '';
+  let query = $state('');
+  let cantidadTotal = $derived(getCantidadTotal());
 
   function doSearch(e) {
     e.preventDefault();
     const q = query.trim();
-    setBusqueda(q);
     navigate(q ? `/catalogo?busqueda=${encodeURIComponent(q)}` : '/catalogo');
   }
 </script>
@@ -49,6 +49,19 @@
     </form>
 
     <div class="nav-actions">
+      <a href="#/admin" class="icon-btn" title="Panel de administración">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="4" y="11" width="16" height="10" rx="2" />
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+      </a>
       <a href="#/catalogo" class="icon-btn" title="Catálogo">
         <svg
           width="20"

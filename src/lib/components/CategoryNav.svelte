@@ -1,6 +1,6 @@
 <script>
   import { navigate } from '../router.js';
-  import { categorias } from '../store.js';
+  import { categorias } from '../store.svelte.js';
 
   let { activeSlug = null } = $props();
 </script>

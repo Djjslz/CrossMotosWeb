@@ -1,7 +1,7 @@
 <script>
   import { navigate } from '../router.js';
   import { formatCOP } from '../format.js';
-  import { agregarAlCarrito } from '../store.js';
+  import { agregarAlCarrito } from '../store.svelte.js';
 
   let { producto } = $props();
 

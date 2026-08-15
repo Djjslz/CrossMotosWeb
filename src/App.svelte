@@ -1,16 +1,20 @@
 <script>
   import { onMount } from 'svelte';
   import { parseHash } from './lib/router.js';
-  import { cargarCategorias, toast } from './lib/store.js';
+  import { cargarCategorias, toast } from './lib/store.svelte.js';
+  import { estaAutenticado } from './lib/api.js';
   import Navbar from './lib/components/Navbar.svelte';
   import Footer from './lib/components/Footer.svelte';
   import CartDrawer from './lib/components/CartDrawer.svelte';
   import Home from './lib/views/Home.svelte';
   import Catalog from './lib/views/Catalog.svelte';
   import ProductDetail from './lib/views/ProductDetail.svelte';
+  import AdminLogin from './lib/views/AdminLogin.svelte';
+  import AdminPanel from './lib/views/AdminPanel.svelte';
 
   let route = $state({ path: '/', query: {} });
   let cartOpen = $state(false);
+  let sesionRevision = $state(0);
 
   function actualizarRuta() {
     route = parseHash();
@@ -32,6 +36,12 @@
     <Catalog query={route.query} />
   {:else if route.path.startsWith('/producto/')}
     <ProductDetail slug={route.path.split('/')[2]} />
+  {:else if route.path === '/admin'}
+    {#if estaAutenticado()}
+      <AdminPanel onLogout={() => (sesionRevision += 1)} />
+    {:else}
+      <AdminLogin onLogin={() => (sesionRevision += 1)} />
+    {/if}
   {:else}
     <section class="container section">
       <div class="empty-state">

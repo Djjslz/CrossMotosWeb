@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { navigate, getDestacados } from '../../lib/router.js';
-  import { categorias, cargarCategorias } from '../../lib/store.js';
+  import { categorias, cargarCategorias } from '../store.svelte.js';
   import ProductCard from '../components/ProductCard.svelte';
   import CategoryNav from '../components/CategoryNav.svelte';
 
@@ -44,8 +44,8 @@
     </div>
     <div class="hero-visual">
       <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="200" cy="150" r="130" fill="rgba(255,77,0,0.08)" />
-        <circle cx="200" cy="150" r="100" fill="rgba(255,77,0,0.06)" stroke="rgba(255,77,0,0.35)" stroke-width="2" stroke-dasharray="6 6" />
+        <circle cx="200" cy="150" r="130" fill="rgba(147,255,43,0.08)" />
+        <circle cx="200" cy="150" r="100" fill="rgba(147,255,43,0.06)" stroke="rgba(147,255,43,0.35)" stroke-width="2" stroke-dasharray="6 6" />
         <path
           d="M200 60c-40 0-70 30-70 70v20l-20 40c-4 8 2 18 11 18h158c9 0 15-10 11-18l-20-40v-20c0-40-30-70-70-70z"
           fill="#1f1f26"
@@ -53,13 +53,13 @@
           stroke-width="3"
         />
         <path d="M155 180h90l-8-45h-74z" fill="#0a0a0c" stroke="#35353f" stroke-width="2" />
-        <rect x="150" y="200" width="100" height="14" rx="7" fill="#ff4d00" />
-        <rect x="120" y="230" width="160" height="10" rx="5" fill="rgba(255,77,0,0.5)" />
+        <rect x="150" y="200" width="100" height="14" rx="7" fill="#93FF2B" />
+        <rect x="120" y="230" width="160" height="10" rx="5" fill="rgba(147,255,43,0.5)" />
         <path d="M210 55l14-14M230 55l6-18" stroke="#35353f" stroke-width="2" stroke-linecap="round" />
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#ff4d00" />
-            <stop offset="100%" stop-color="#ff6a2b" />
+            <stop offset="0%" stop-color="#93FF2B" />
+            <stop offset="100%" stop-color="#b2ff5e" />
           </linearGradient>
         </defs>
       </svg>
