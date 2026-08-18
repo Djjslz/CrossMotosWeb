@@ -26,8 +26,8 @@
       const q = new URLSearchParams({ page: pagination.page, limit: pagination.limit });
       if (filtroLeido) q.set('leido', filtroLeido);
       const data = await api.get(`/contactos?${q}`);
-      items = data.data;
-      pagination = data.pagination;
+      items = data?.data ?? [];
+      pagination = data?.pagination ?? pagination;
     } catch (err) {
       error = err.message;
     } finally {

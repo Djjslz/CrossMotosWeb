@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { parseHash } from './lib/router.js';
-  import { cargarCategorias, toast } from './lib/store.svelte.js';
+  import { cargarCategorias, showToast, toast } from './lib/store.svelte.js';
   import { estaAutenticado } from './lib/api.js';
   import Navbar from './lib/components/Navbar.svelte';
   import Footer from './lib/components/Footer.svelte';
@@ -23,6 +23,10 @@
   onMount(() => {
     actualizarRuta();
     window.addEventListener('hashchange', actualizarRuta);
+    window.addEventListener('cm:sesion-caducada', () => {
+      sesionRevision += 1;
+      showToast('Sesión caducada. Inicia sesión de nuevo.', 'error');
+    });
     cargarCategorias();
   });
 </script>

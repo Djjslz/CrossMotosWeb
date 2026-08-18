@@ -37,8 +37,8 @@
       const q = new URLSearchParams({ page: pagination.page, limit: pagination.limit });
       if (filtroEstado) q.set('estado', filtroEstado);
       const data = await api.get(`/pedidos?${q}`);
-      items = data.data;
-      pagination = data.pagination;
+      items = data?.data ?? [];
+      pagination = data?.pagination ?? pagination;
     } catch (err) {
       error = err.message;
     } finally {

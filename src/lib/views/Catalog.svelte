@@ -71,6 +71,7 @@
     } catch (err) {
       error = err.message;
       productos = [];
+      pagination = { page: 1, total: 0, totalPages: 1, limit: 12 };
     } finally {
       cargando = false;
     }

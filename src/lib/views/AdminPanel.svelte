@@ -24,8 +24,8 @@
       const q = new URLSearchParams({ page: pagination.page, limit: pagination.limit });
       if (busqueda.trim()) q.set('busqueda', busqueda.trim());
       const data = await api.get(`/inventario?${q}`);
-      items = data.data;
-      pagination = data.pagination;
+      items = data?.data ?? [];
+      pagination = data?.pagination ?? pagination;
     } catch (err) {
       error = err.message;
     } finally {

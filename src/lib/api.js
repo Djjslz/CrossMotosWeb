@@ -55,6 +55,7 @@ async function request(path, options = {}) {
 
   if (res.status === 401) {
     limpiarSesion();
+    window.dispatchEvent(new Event('cm:sesion-caducada'));
   }
 
   if (!res.ok) {
