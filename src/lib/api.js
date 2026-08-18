@@ -41,10 +41,19 @@ async function request(path, options = {}) {
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE}${path}`, {
-    headers,
-    ...options,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  let res;
+  try {
+    res = await fetch(`${BASE}${path}`, { headers, signal: controller.signal, ...options });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new ApiError('El servidor tardó demasiado en responder. Reintenta.', 504);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   let body = null;
   try {

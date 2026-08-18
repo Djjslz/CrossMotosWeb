@@ -158,7 +158,10 @@
   </div>
 
   {#if error}
-    <div class="error-box">{error}</div>
+    <div class="error-box">
+      <span>{error}</span>
+      <button class="btn btn-outline btn-sm" onclick={cargar}>Reintentar</button>
+    </div>
   {/if}
 
   {#if cargando}
