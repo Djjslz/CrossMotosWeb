@@ -61,6 +61,7 @@ async function request(path, options = {}) {
     const msg = body?.message || `Error ${res.status}`;
     throw new ApiError(msg, res.status, body?.errors || []);
   }
+  if (body && body.pagination) return body;
   return body?.data ?? body;
 }
 
