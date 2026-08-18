@@ -5,6 +5,7 @@
   import { showToast } from '../store.svelte.js';
   import AdminPedidos from './AdminPedidos.svelte';
   import AdminMensajes from './AdminMensajes.svelte';
+  import ProductoForm from './ProductoForm.svelte';
 
   let { onLogout = () => {} } = $props();
 
@@ -16,6 +17,9 @@
   let error = $state('');
   let busqueda = $state('');
   let guardando = $state({});
+  let formAbierto = $state(false);
+  let productoEdicion = $state(null);
+  let todasCategorias = $state([]);
 
   async function cargar() {
     cargando = true;
@@ -106,6 +110,25 @@
     onLogout();
   }
 
+  async function abrirFormulario(item = null) {
+    productoEdicion = item;
+    formAbierto = true;
+    if (!todasCategorias.length) {
+      try {
+        const data = await api.get('/categorias/todas');
+        todasCategorias = data?.data ?? data ?? [];
+      } catch {
+        todasCategorias = [];
+      }
+    }
+  }
+
+  async function alGuardar() {
+    formAbierto = false;
+    productoEdicion = null;
+    await cargar();
+  }
+
   onMount(cargar);
 </script>
 
@@ -155,6 +178,7 @@
     <span class="catalog-result">
       {cargando ? 'Cargando...' : `${pagination.total} producto${pagination.total === 1 ? '' : 's'}`}
     </span>
+    <button class="btn btn-primary btn-sm" onclick={() => abrirFormulario()}>+ Nuevo producto</button>
   </div>
 
   {#if error}
@@ -204,6 +228,9 @@
                         onclick={() => toggleDestacado(item)}
                       >
                         {item.producto.destacado ? '★ Destacado' : '☆ Destacar'}
+                      </button>
+                      <button class="link-btn" disabled={guardando[item._id]} onclick={() => abrirFormulario(item)}>
+                        ✏ Editar
                       </button>
                     </div>
                   </div>
@@ -287,3 +314,15 @@
     <AdminMensajes />
   {/if}
 </section>
+
+{#if formAbierto}
+  <ProductoForm
+    producto={productoEdicion}
+    categorias={todasCategorias}
+    onCerrar={() => {
+      formAbierto = false;
+      productoEdicion = null;
+    }}
+    onGuardado={alGuardar}
+  />
+{/if}

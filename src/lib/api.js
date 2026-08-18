@@ -37,9 +37,11 @@ export function estaAutenticado() {
 }
 
 async function request(path, options = {}) {
-  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  const esFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+  const headers = { ...(options.headers || {}) };
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
+  if (!esFormData) headers['Content-Type'] = 'application/json';
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30000);
@@ -82,4 +84,6 @@ export const api = {
   put: (path, data, options) =>
     request(path, { method: 'PUT', body: JSON.stringify(data), ...options }),
   del: (path, options) => request(path, { method: 'DELETE', ...options }),
+  upload: (path, formData, options) =>
+    request(path, { method: 'POST', body: formData, ...options }),
 };
