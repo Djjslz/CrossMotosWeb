@@ -3,8 +3,12 @@
   import { api, limpiarSesion } from '../../lib/api.js';
   import { formatCOP } from '../../lib/format.js';
   import { showToast } from '../store.svelte.js';
+  import AdminPedidos from './AdminPedidos.svelte';
+  import AdminMensajes from './AdminMensajes.svelte';
 
   let { onLogout = () => {} } = $props();
+
+  let vista = $state('inventario');
 
   let items = $state([]);
   let pagination = $state({ page: 1, total: 0, totalPages: 1, limit: 10 });
@@ -114,7 +118,20 @@
     <button class="btn btn-outline btn-sm" onclick={salir}>Cerrar sesión</button>
   </div>
 
-  <div class="catalog-toolbar">
+  <div class="admin-tabs">
+    <button class="tab-btn" class:active={vista === 'inventario'} onclick={() => (vista = 'inventario')}>
+      Inventario
+    </button>
+    <button class="tab-btn" class:active={vista === 'pedidos'} onclick={() => (vista = 'pedidos')}>
+      Pedidos
+    </button>
+    <button class="tab-btn" class:active={vista === 'mensajes'} onclick={() => (vista = 'mensajes')}>
+      Mensajes
+    </button>
+  </div>
+
+  {#if vista === 'inventario'}
+    <div class="catalog-toolbar">
     <form
       class="nav-search"
       style="max-width:100%;flex:1"
@@ -260,5 +277,10 @@
         </button>
       </div>
     {/if}
+  {/if}
+  {:else if vista === 'pedidos'}
+    <AdminPedidos />
+  {:else}
+    <AdminMensajes />
   {/if}
 </section>
