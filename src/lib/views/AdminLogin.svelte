@@ -57,14 +57,14 @@
         <div class="error-box">{error}</div>
       {/if}
 
-      <form onsubmit={ingresar} autocomplete="on">
+      <form onsubmit={ingresar} autocomplete="off">
         <label class="field">
           <span>Usuario</span>
           <input
             type="text"
             bind:value={usuario}
             placeholder="Usuario"
-            autocomplete="on"
+            autocomplete="off"
             required
           />
         </label>
@@ -75,7 +75,6 @@
               type={showPass ? "text" : "password"}
               bind:value={password}
               placeholder="Contraseña"
-              autocomplete="new-password"
               required
             />
             <button
