@@ -57,11 +57,11 @@
 
       <form onsubmit={ingresar}>
         <label class="field">
-          <span>Usuario o email</span>
+          <span>Usuario</span>
           <input
             type="text"
             bind:value={usuario}
-            placeholder="davidez@crossmotos.com"
+            placeholder="Usuario"
             autocomplete="username"
             required
           />
@@ -72,7 +72,7 @@
             <input
               type={showPass ? 'text' : 'password'}
               bind:value={password}
-              placeholder="••••••••"
+              placeholder="Contraseña"
               autocomplete="current-password"
               required
             />
