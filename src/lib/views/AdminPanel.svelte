@@ -20,6 +20,9 @@
   let formAbierto = $state(false);
   let productoEdicion = $state(null);
   let todasCategorias = $state([]);
+  let exportando = $state(false);
+  let importando = $state(false);
+  let fileInput = $state(null);
 
   async function cargar() {
     cargando = true;
@@ -129,6 +132,40 @@
     await cargar();
   }
 
+  async function descargarInventario() {
+    exportando = true;
+    try {
+      await api.downloadBlob('/inventario/exportar', `inventario_crossmotos_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast('Inventario descargado');
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      exportando = false;
+    }
+  }
+
+  async function subirInventario() {
+    const file = fileInput?.files?.[0];
+    if (!file) return;
+    importando = true;
+    try {
+      const fd = new FormData();
+      fd.append('archivo', file);
+      const data = await api.upload('/inventario/importar', fd);
+      const resumen = data?.data ?? data;
+      showToast(
+        `Importados ${resumen?.actualizados ?? 0} actualizados, ${resumen?.creados ?? 0} nuevos`,
+        resumen?.errores?.length ? 'error' : 'success'
+      );
+      fileInput.value = '';
+      await cargar();
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      importando = false;
+    }
+  }
+
   onMount(cargar);
 </script>
 
@@ -178,6 +215,19 @@
     <span class="catalog-result">
       {cargando ? 'Cargando...' : `${pagination.total} producto${pagination.total === 1 ? '' : 's'}`}
     </span>
+    <button class="btn btn-outline btn-sm" disabled={exportando} onclick={descargarInventario}>
+      {exportando ? 'Descargando...' : '⬇ Descargar Excel'}
+    </button>
+    <button class="btn btn-outline btn-sm" disabled={importando} onclick={() => fileInput?.click()}>
+      {importando ? 'Subiendo...' : '⬆ Subir Excel'}
+    </button>
+    <input
+      bind:this={fileInput}
+      type="file"
+      accept=".xlsx,.xls"
+      hidden
+      onchange={subirInventario}
+    />
     <button class="btn btn-primary btn-sm" onclick={() => abrirFormulario()}>+ Nuevo producto</button>
   </div>
 

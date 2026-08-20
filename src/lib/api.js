@@ -86,4 +86,31 @@ export const api = {
   del: (path, options) => request(path, { method: 'DELETE', ...options }),
   upload: (path, formData, options) =>
     request(path, { method: 'POST', body: formData, ...options }),
+  downloadBlob: async (path, filename) => {
+    const headers = {};
+    const token = getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch(`${BASE}${path}`, { headers });
+    if (res.status === 401) {
+      limpiarSesion();
+      window.dispatchEvent(new Event('cm:sesion-caducada'));
+    }
+    if (!res.ok) {
+      let msg = `Error ${res.status}`;
+      try {
+        const b = await res.json();
+        msg = b?.message || msg;
+      } catch {}
+      throw new ApiError(msg, res.status);
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  },
 };
