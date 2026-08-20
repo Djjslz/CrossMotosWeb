@@ -15,6 +15,10 @@
   let route = $state({ path: '/', query: {} });
   let cartOpen = $state(false);
   let sesionRevision = $state(0);
+  let autenticado = $derived.by(() => {
+    sesionRevision;
+    return estaAutenticado();
+  });
 
   function actualizarRuta() {
     route = parseHash();
@@ -41,7 +45,7 @@
   {:else if route.path.startsWith('/producto/')}
     <ProductDetail slug={route.path.split('/')[2]} />
   {:else if route.path === '/admin'}
-    {#if estaAutenticado()}
+    {#if autenticado}
       <AdminPanel onLogout={() => (sesionRevision += 1)} />
     {:else}
       <AdminLogin onLogin={() => (sesionRevision += 1)} />
