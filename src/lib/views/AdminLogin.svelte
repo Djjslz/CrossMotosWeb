@@ -43,7 +43,6 @@
           {currentUser.nombre?.charAt(0).toUpperCase() || "A"}
         </div>
         <h2>Hola, {currentUser.nombre}</h2>
-        <p class="login-email">{currentUser.email}</p>
         <p class="login-rol">Rol: {currentUser.rol}</p>
       </div>
     {:else}
