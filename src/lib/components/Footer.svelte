@@ -29,7 +29,6 @@
         <h4>Ayuda</h4>
         <a href="#/catalogo">Envíos y pagos</a>
         <a href="#/catalogo">Guía de tallas</a>
-        <a href="#/catalogo">Cambios y devoluciones</a>
         <a href="#/catalogo">Contacto</a>
       </div>
     </div>
