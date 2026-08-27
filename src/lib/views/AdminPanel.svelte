@@ -23,6 +23,7 @@
   let exportando = $state(false);
   let importando = $state(false);
   let fileInput = $state(null);
+  let soloDestacados = $state(false);
 
   async function cargar() {
     cargando = true;
@@ -30,6 +31,7 @@
     try {
       const q = new URLSearchParams({ page: pagination.page, limit: pagination.limit });
       if (busqueda.trim()) q.set('busqueda', busqueda.trim());
+      if (soloDestacados) q.set('destacado', 'true');
       const data = await api.get(`/inventario?${q}`);
       items = data?.data ?? [];
       pagination = data?.pagination ?? pagination;
@@ -229,6 +231,14 @@
       onchange={subirInventario}
     />
     <button class="btn btn-primary btn-sm" onclick={() => abrirFormulario()}>+ Nuevo producto</button>
+    <button
+      class="btn btn-sm"
+      class:btn-primary={soloDestacados}
+      class:btn-outline={!soloDestacados}
+      onclick={() => { soloDestacados = !soloDestacados; pagination.page = 1; cargar(); }}
+    >
+      {soloDestacados ? '★ Destacados' : '☆ Todos'}
+    </button>
   </div>
 
   {#if error}
