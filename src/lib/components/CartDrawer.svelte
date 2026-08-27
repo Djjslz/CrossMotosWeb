@@ -1,6 +1,6 @@
 <script>
   import { formatCOP } from '../format.js';
-  import { api } from '../api.js';
+  import { api, getImageUrl } from '../api.js';
   import {
     carrito,
     cambiarCantidad,
@@ -202,7 +202,7 @@
             <div class="cart-item">
               <div class="cart-thumb">
                 {#if item.producto.imagenes && item.producto.imagenes.length}
-                  <img src={item.producto.imagenes[0]} alt="" />
+                  <img src={getImageUrl(item.producto.imagenes[0])} alt="" />
                 {:else}
                   <svg
                     width="30"

@@ -3,6 +3,7 @@
   import { getProducto, navigate } from '../../lib/router.js';
   import { formatCOP } from '../../lib/format.js';
   import { agregarAlCarrito } from '../store.svelte.js';
+  import { getImageUrl } from '../../lib/api.js';
   import ProductCard from '../components/ProductCard.svelte';
 
   let { slug } = $props();
@@ -64,7 +65,7 @@
     <div class="detail-layout">
       <div class="detail-media">
         {#if producto.imagenes && producto.imagenes.length}
-          <img src={producto.imagenes[0]} alt={producto.nombre} />
+          <img src={getImageUrl(producto.imagenes[0])} alt={producto.nombre} />
         {:else}
           <svg
             width="140"

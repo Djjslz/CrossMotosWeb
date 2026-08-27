@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { api, limpiarSesion } from '../../lib/api.js';
+  import { api, limpiarSesion, getImageUrl } from '../../lib/api.js';
   import { formatCOP } from '../../lib/format.js';
   import { showToast } from '../store.svelte.js';
   import AdminPedidos from './AdminPedidos.svelte';
@@ -260,7 +260,7 @@
                 <div class="table-product">
                   <div class="cart-thumb">
                     {#if item.producto.imagenes && item.producto.imagenes.length}
-                      <img src={item.producto.imagenes[0]} alt="" />
+                      <img src={getImageUrl(item.producto.imagenes[0])} alt="" />
                     {:else}
                       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5c5a66" stroke-width="1.5">
                         <rect x="4" y="3" width="16" height="18" rx="2" />

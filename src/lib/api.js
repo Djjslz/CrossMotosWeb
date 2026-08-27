@@ -110,7 +110,27 @@ export const api = {
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    a.remove();
     URL.revokeObjectURL(url);
   },
 };
+
+export function getImageUrl(path) {
+  if (!path) return '';
+  if (/^(https?:\/\/|data:)/.test(path)) return path;
+
+  let urlBase = BASE;
+  if (urlBase === '/api') {
+    urlBase = window.location.origin + '/api';
+  }
+  
+  try {
+    const url = new URL(urlBase);
+    if (path.startsWith('/api/')) return url.origin + path;
+    if (path.startsWith('/uploads/')) return url.origin + '/api' + path;
+    return url.origin + (path.startsWith('/') ? path : '/' + path);
+  } catch {
+    if (path.startsWith('/api/')) return path;
+    if (path.startsWith('/uploads/')) return '/api' + path;
+    return path.startsWith('/') ? `/api${path}` : `/api/${path}`;
+  }
+}

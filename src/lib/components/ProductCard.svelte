@@ -2,6 +2,7 @@
   import { navigate } from '../router.js';
   import { formatCOP } from '../format.js';
   import { agregarAlCarrito } from '../store.svelte.js';
+  import { getImageUrl } from '../api.js';
 
   let { producto } = $props();
 
@@ -33,7 +34,7 @@
     tabindex="0"
   >
     {#if producto.imagenes && producto.imagenes.length}
-      <img src={producto.imagenes[0]} alt={producto.nombre} loading="lazy" />
+      <img src={getImageUrl(producto.imagenes[0])} alt={producto.nombre} loading="lazy" />
     {:else}
       <svg
         width="60"

@@ -1,5 +1,5 @@
 <script>
-  import { api } from '../../lib/api.js';
+  import { api, getImageUrl } from '../../lib/api.js';
   import { showToast } from '../store.svelte.js';
 
   let { producto, categorias, onCerrar, onGuardado } = $props();
@@ -179,7 +179,7 @@
       <div class="img-grid">
         {#each imagenes as img (img)}
           <div class="thumb">
-            <img src={img} alt="" />
+            <img src={getImageUrl(img)} alt="" />
             <button class="thumb-remove" onclick={() => quitarImagen(img)} aria-label="Quitar imagen">✕</button>
           </div>
         {/each}
