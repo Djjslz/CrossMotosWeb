@@ -5,8 +5,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="#/" class="brand">
-          <span class="brand-mark">CM</span>
-          <span>CrossMotos</span>
+          <img src="/Logo.png" alt="CrossMotos" class="brand-logo" />
         </a>
         <p>
           Equipamiento y accesorios para motociclistas. Seguridad y estilo sobre dos ruedas.
