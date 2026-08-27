@@ -32,7 +32,24 @@
         const fd = new FormData();
         fd.append('imagenes', archivo);
         const data = await api.upload('/uploads', fd);
-        imagenes = [...imagenes, ...data.urls];
+        
+        let obtenidas = [];
+        if (Array.isArray(data)) obtenidas = data;
+        else if (data && Array.isArray(data.urls)) obtenidas = data.urls;
+        else if (data && data.url) obtenidas = [data.url];
+        else if (typeof data === 'string') obtenidas = [data];
+
+        const formateadas = obtenidas.map(u => {
+          let str = typeof u === 'object' && u.url ? u.url : u;
+          if (typeof str !== 'string') return '';
+          str = str.replace(/\\/g, '/');
+          if (!str.startsWith('http') && !str.startsWith('data:') && !str.startsWith('/api/')) {
+            return str.startsWith('/') ? `/api${str}` : `/api/${str}`;
+          }
+          return str;
+        }).filter(Boolean);
+
+        imagenes = [...imagenes, ...formateadas];
       }
       showToast('Imágenes subidas');
     } catch (err) {
