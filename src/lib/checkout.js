@@ -2,7 +2,7 @@ import { formatCOP } from './format.js';
 
 export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER || '').replace(/[^0-9]/g, '');
 
-export function construirPayloadPedido(carrito, cliente, tipoEntrega, medioContacto, vendedor = '') {
+export function construirPayloadPedido(carrito, cliente, tipoEntrega, medioContacto) {
   return {
     cliente: {
       nombre: cliente.nombre,
@@ -15,7 +15,6 @@ export function construirPayloadPedido(carrito, cliente, tipoEntrega, medioConta
     items: carrito.map((i) => ({ codigo: i.producto.codigo, cantidad: i.cantidad })),
     tipoEntrega,
     medioContacto,
-    vendedor,
   };
 }
 

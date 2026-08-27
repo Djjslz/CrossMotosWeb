@@ -33,7 +33,6 @@
     notas: '',
   });
   let tipoEntrega = $state('recojo_en_tienda');
-  let vendedor = $state('');
 
   function abrirCheckout() {
     if (carrito.length === 0) return;
@@ -58,7 +57,7 @@
     try {
       const pedido = await api.post(
         '/pedidos',
-        construirPayloadPedido(carrito, cliente, tipoEntrega, medioContacto, vendedor)
+        construirPayloadPedido(carrito, cliente, tipoEntrega, medioContacto)
       );
       ultimoPedido = pedido;
       carrito.length = 0;
@@ -145,10 +144,6 @@
               <option value="recojo_en_tienda">Recojo en tienda</option>
               <option value="envio">Envío</option>
             </select>
-          </label>
-          <label class="field">
-            <span>Nombre del vendedor</span>
-            <input type="text" bind:value={vendedor} placeholder="Nombre de quien atiende" />
           </label>
           <label class="field">
             <span>Notas</span>

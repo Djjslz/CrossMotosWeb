@@ -14,6 +14,11 @@
   let expandido = $state(null);
   let cambiando = $state({});
 
+  let mostrarModal = $state(false);
+  let pedidoEntregar = $state(null);
+  let nombreVendedor = $state('');
+  let guardando = $state(false);
+
   const etiquetasEstado = {
     recibido: 'Recibido',
     cotizado: 'Cotizado',
@@ -63,17 +68,37 @@
     expandido = expandido === id ? null : id;
   }
 
-  async function entregarPedido(item) {
-    if (!confirm(`¿Marcar el pedido ${item.numero} como entregado?`)) return;
-    cambiando[item._id] = true;
+  function abrirModalEntregar(item) {
+    pedidoEntregar = item;
+    nombreVendedor = '';
+    mostrarModal = true;
+  }
+
+  function cerrarModal() {
+    mostrarModal = false;
+    pedidoEntregar = null;
+    nombreVendedor = '';
+  }
+
+  async function confirmarEntrega() {
+    if (!nombreVendedor.trim()) {
+      showToast('Ingresa tu nombre', 'error');
+      return;
+    }
+    guardando = true;
     try {
-      const data = await api.put(`/pedidos/${item._id}/estado`, { estado: 'entregado' });
-      item.estado = data.estado;
-      showToast(`Pedido ${item.numero} entregado`);
+      const data = await api.put(`/pedidos/${pedidoEntregar._id}/estado`, {
+        estado: 'entregado',
+        vendedor: nombreVendedor.trim(),
+      });
+      pedidoEntregar.estado = data.estado;
+      pedidoEntregar.vendedor = nombreVendedor.trim();
+      showToast(`Pedido ${pedidoEntregar.numero} entregado por ${nombreVendedor.trim()}`);
+      cerrarModal();
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
-      cambiando[item._id] = false;
+      guardando = false;
     }
   }
 
@@ -162,7 +187,7 @@
                     disabled={cambiando[item._id]}
                     onclick={(e) => {
                       e.stopPropagation();
-                      entregarPedido(item);
+                      abrirModalEntregar(item);
                     }}
                   >
                     Entregar
@@ -268,3 +293,31 @@
     {/if}
   {/if}
 </section>
+
+{#if mostrarModal}
+  <div class="overlay" role="presentation" onclick={cerrarModal}></div>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3>Entregar pedido {pedidoEntregar?.numero}</h3>
+      <button class="icon-btn" onclick={cerrarModal} aria-label="Cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="checkout-info">Ingresa tu nombre para registrar quién entregó el pedido.</p>
+      <label class="field">
+        <span>Nombre del vendedor *</span>
+        <input
+          type="text"
+          bind:value={nombreVendedor}
+          placeholder="Tu nombre completo"
+          onkeydown={(e) => { if (e.key === 'Enter') confirmarEntrega(); }}
+        />
+      </label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick={cerrarModal}>Cancelar</button>
+      <button class="btn btn-primary" onclick={confirmarEntrega} disabled={guardando || !nombreVendedor.trim()}>
+        {guardando ? 'Guardando...' : 'Confirmar entrega'}
+      </button>
+    </div>
+  </div>
+{/if}
