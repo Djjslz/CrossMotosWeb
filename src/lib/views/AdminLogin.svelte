@@ -47,9 +47,9 @@
       </div>
     {:else}
       <div class="login-head">
-        <span class="brand-mark">CM</span>
-        <h2>Panel de administración</h2>
-        <p>Ingresa con tu usuario para gestionar productos y precios.</p>
+        <img src="/Logo.png" alt="CrossMotos" class="brand-logo" style="height:48px;margin:0 auto 12px" />
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa con tu usuario para gestionar pedidos.</p>
       </div>
 
       {#if error}
@@ -58,11 +58,11 @@
 
       <form onsubmit={ingresar} autocomplete="off">
         <label class="field">
-          <span>Usuario</span>
+          <span>Usuario o email</span>
           <input
             type="text"
             bind:value={usuario}
-            placeholder="Usuario"
+            placeholder="Usuario o email"
             autocomplete="off"
             required
           />

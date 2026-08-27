@@ -115,14 +115,15 @@
 {:else}
   <div class="table-wrap">
     <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Pedido</th>
-          <th>Cliente</th>
-          <th>Total</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
+        <thead>
+          <tr>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Vendedor</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
       <tbody>
         {#each items as item (item._id)}
           <tr class="expandable-row" onclick={() => toggleExpandido(item._id)}>
@@ -143,12 +144,15 @@
               <div class="meta-inline">{item.items.length} ítem(s)</div>
             </td>
             <td>
+              <span class="meta-inline">{item.vendedor || '—'}</span>
+            </td>
+            <td>
               <span class="badge-estado badge-{item.estado}">{etiquetasEstado[item.estado]}</span>
             </td>
           </tr>
           {#if expandido === item._id}
             <tr class="detail-row">
-              <td colspan="4">
+              <td colspan="5">
                 <div class="detail-box">
                   <div class="detail-grid">
                     <div>
@@ -167,6 +171,12 @@
                       <span class="k">Dirección</span>
                       <div class="v">{item.cliente.direccion || '—'}</div>
                     </div>
+                    {#if item.vendedor}
+                      <div>
+                        <span class="k">Vendedor</span>
+                        <div class="v">{item.vendedor}</div>
+                      </div>
+                    {/if}
                     {#if item.cliente.notas}
                       <div>
                         <span class="k">Notas</span>
