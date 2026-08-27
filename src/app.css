@@ -168,6 +168,12 @@ button {
   letter-spacing: -0.02em;
 }
 
+.brand-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
 .brand-mark {
   width: 34px;
   height: 34px;

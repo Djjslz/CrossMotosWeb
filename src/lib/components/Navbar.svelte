@@ -10,8 +10,7 @@
 <nav class="navbar">
   <div class="container navbar-inner">
     <a href="#/" class="brand" onclick={() => navigate('/')}>
-      <span class="brand-mark">CM</span>
-      <span class="brand-text">CrossMotos</span>
+      <img src="/Logo.png" alt="CrossMotos" class="brand-logo" />
     </a>
 
     <div class="nav-actions">
