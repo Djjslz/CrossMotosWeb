@@ -1,10 +1,15 @@
 <script>
   import { navigate } from '../router.js';
   import { getCantidadTotal } from '../store.svelte.js';
+  import SearchAutocomplete from './SearchAutocomplete.svelte';
 
   let { onOpenCart = () => {} } = $props();
 
   let cantidadTotal = $derived(getCantidadTotal());
+
+  function handleSearch(term) {
+    window.location.hash = `/catalogo?busqueda=${encodeURIComponent(term)}`;
+  }
 </script>
 
 <nav class="navbar">
@@ -12,6 +17,8 @@
     <a href="#/" class="brand" onclick={() => navigate('/')}>
       <img src="/Logo.png" alt="CrossMotos" class="brand-logo" />
     </a>
+
+    <SearchAutocomplete onSearch={handleSearch} />
 
     <div class="nav-actions">
       <a href="#/admin" class="icon-btn" title="Panel de administración">

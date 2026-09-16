@@ -86,6 +86,7 @@ export const api = {
   del: (path, options) => request(path, { method: 'DELETE', ...options }),
   upload: (path, formData, options) =>
     request(path, { method: 'POST', body: formData, ...options }),
+  getSugerencias: (q) => request(`/productos/sugerencias?q=${encodeURIComponent(q)}`, { method: 'GET' }),
   downloadBlob: async (path, filename) => {
     const headers = {};
     const token = getToken();
