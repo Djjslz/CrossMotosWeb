@@ -158,7 +158,7 @@ button {
   display: flex;
   align-items: center;
   gap: 24px;
-  height: 76px;
+  height: 86px;
 }
 
 .brand {
@@ -168,10 +168,11 @@ button {
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: -0.02em;
+  flex-shrink: 0;
 }
 
 .brand-logo {
-  height: 64px;
+  height: 74px;
   width: auto;
   display: block;
 }
@@ -230,6 +231,7 @@ button {
   flex: 1;
   position: relative;
   max-width: 480px;
+  margin: 0 auto;
 }
 
 .search-spinner {
@@ -1843,7 +1845,7 @@ button {
 
   .search-autocomplete {
     position: fixed;
-    top: 68px;
+    top: 78px;
     left: 0;
     right: 0;
     max-width: 100%;
@@ -1859,7 +1861,7 @@ button {
 
   .ac-dropdown {
     position: fixed;
-    top: 118px;
+    top: 128px;
     left: 16px;
     right: 16px;
     max-height: calc(100vh - 140px);
