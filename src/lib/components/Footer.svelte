@@ -17,6 +17,8 @@
         <a href="#/catalogo?categoria=cascos">Cascos</a>
         <a href="#/catalogo?categoria=guantes">Guantes</a>
         <a href="#/catalogo?categoria=chaquetas">Chaquetas</a>
+        <a href="#/repuestos">Repuestos</a>
+        <a href="#/accesorios">Accesorios</a>
       </div>
       <div class="footer-col">
         <h4>Tienda</h4>

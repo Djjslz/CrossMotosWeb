@@ -2,8 +2,9 @@
   import { onMount } from 'svelte';
   import { getProducto, navigate } from '../../lib/router.js';
   import { formatCOP } from '../../lib/format.js';
-  import { agregarAlCarrito } from '../store.svelte.js';
+  import { agregarAlCarrito, showToast } from '../store.svelte.js';
   import { getImageUrl } from '../../lib/api.js';
+  import { abrirWhatsApp } from '../../lib/checkout.js';
   import ProductCard from '../components/ProductCard.svelte';
 
   let { slug } = $props();
@@ -39,6 +40,14 @@
   }
 
   onMount(cargar);
+
+  function cotizar() {
+    const sku = producto.sku ?? producto.codigo ?? '';
+    const mensaje = `Hola CrossMotos, quiero cotizar: ${producto.nombre}${sku ? ` (SKU: ${sku})` : ''}`;
+    if (!abrirWhatsApp(mensaje)) {
+      showToast('No hay número de WhatsApp configurado. Escríbenos desde contacto.', 'error');
+    }
+  }
 
   $effect(() => {
     if (producto && producto.slug !== slug) cargar();
@@ -86,7 +95,11 @@
           <span class="detail-marca">{producto.marca}</span>
         {/if}
         <h1 class="detail-title">{producto.nombre}</h1>
-        <div class="detail-precio">{formatCOP(producto.precio)}</div>
+        {#if producto.precio > 0}
+          <div class="detail-precio">{formatCOP(producto.precio)}</div>
+        {:else}
+          <div class="detail-precio detail-precio-cotizar">Precio a cotizar</div>
+        {/if}
         <div>
           <span class="stock-chip {stockClass(producto.stock)}">
             <span class="dot"></span>
@@ -103,31 +116,37 @@
         {/if}
 
         <div class="detail-actions">
-          <div class="cantidad-control">
+          {#if producto.precio > 0}
+            <div class="cantidad-control">
+              <button
+                disabled={cantidad <= 1}
+                onclick={() => (cantidad -= 1)}
+                aria-label="Disminuir cantidad"
+              >
+                −
+              </button>
+              <span>{cantidad}</span>
+              <button
+                disabled={cantidad >= (producto.stock || 0)}
+                onclick={() => (cantidad += 1)}
+                aria-label="Aumentar cantidad"
+              >
+                +
+              </button>
+            </div>
             <button
-              disabled={cantidad <= 1}
-              onclick={() => (cantidad -= 1)}
-              aria-label="Disminuir cantidad"
+              class="btn btn-primary"
+              disabled={!producto.stock || producto.stock <= 0}
+              onclick={() => agregarAlCarrito(producto, cantidad)}
+              style="flex:1"
             >
-              −
+              Agregar al carrito
             </button>
-            <span>{cantidad}</span>
-            <button
-              disabled={cantidad >= (producto.stock || 0)}
-              onclick={() => (cantidad += 1)}
-              aria-label="Aumentar cantidad"
-            >
-              +
+          {:else}
+            <button class="btn btn-primary" onclick={cotizar} style="flex:1">
+              Solicitar cotización
             </button>
-          </div>
-          <button
-            class="btn btn-primary"
-            disabled={!producto.stock || producto.stock <= 0}
-            onclick={() => agregarAlCarrito(producto, cantidad)}
-            style="flex:1"
-          >
-            Agregar al carrito
-          </button>
+          {/if}
         </div>
       </div>
     </div>

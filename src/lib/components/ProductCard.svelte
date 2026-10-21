@@ -64,29 +64,49 @@
       <span class="card-marca">{producto.marca}</span>
     {/if}
     <h3 class="card-titulo">{producto.nombre}</h3>
-    <div class="card-precio">
-      <small>COP</small>
-      {formatCOP(producto.precio)}
-    </div>
+    {#if producto.precio > 0}
+      <div class="card-precio">
+        <small>COP</small>
+        {formatCOP(producto.precio)}
+      </div>
+    {:else}
+      <div class="card-precio card-precio-cotizar">Precio a cotizar</div>
+    {/if}
     <div class="card-footer">
-      <button
-        class="btn-carrito"
-        disabled={!producto.stock || producto.stock <= 0}
-        onclick={() => agregarAlCarrito(producto)}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
+      {#if producto.precio > 0}
+        <button
+          class="btn-carrito"
+          disabled={!producto.stock || producto.stock <= 0}
+          onclick={() => agregarAlCarrito(producto)}
         >
-          <path d="M6 6h15l-1.5 9h-12z" />
-          <path d="M6 6L5 3H2" />
-        </svg>
-        Agregar
-      </button>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 6h15l-1.5 9h-12z" />
+            <path d="M6 6L5 3H2" />
+          </svg>
+          Agregar
+        </button>
+      {:else}
+        <button class="btn-carrito" onclick={irDetalle}>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Cotizar
+        </button>
+      {/if}
       <span class="stock-note {stockClass(producto.stock)}">{stockText(producto.stock)}</span>
     </div>
   </div>

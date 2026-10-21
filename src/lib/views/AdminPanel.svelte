@@ -5,6 +5,7 @@
   import { showToast } from '../store.svelte.js';
   import AdminPedidos from './AdminPedidos.svelte';
   import AdminMensajes from './AdminMensajes.svelte';
+  import AdminPortada from './AdminPortada.svelte';
   import ProductoForm from './ProductoForm.svelte';
 
   let { onLogout = () => {} } = $props();
@@ -183,6 +184,9 @@
   <div class="admin-tabs">
     <button class="tab-btn" class:active={vista === 'inventario'} onclick={() => (vista = 'inventario')}>
       Inventario
+    </button>
+    <button class="tab-btn" class:active={vista === 'portada'} onclick={() => (vista = 'portada')}>
+      Portada
     </button>
     <button class="tab-btn" class:active={vista === 'pedidos'} onclick={() => (vista = 'pedidos')}>
       Pedidos
@@ -370,6 +374,8 @@
   {/if}
   {:else if vista === 'pedidos'}
     <AdminPedidos />
+  {:else if vista === 'portada'}
+    <AdminPortada />
   {:else}
     <AdminMensajes />
   {/if}

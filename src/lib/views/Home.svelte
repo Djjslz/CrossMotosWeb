@@ -1,77 +1,42 @@
 <script>
   import { onMount } from 'svelte';
-  import { navigate } from '../../lib/router.js';
-  import {
-    categorias,
-    destacados,
-    cargarCategorias,
-    cargarDestacados,
-  } from '../store.svelte.js';
+  import { destacados, cargarDestacados } from '../store.svelte.js';
   import ProductCard from '../components/ProductCard.svelte';
-  import CategoryNav from '../components/CategoryNav.svelte';
+  import HeroCarousel from '../components/HeroCarousel.svelte';
 
   let cargando = $state(true);
 
   onMount(async () => {
-    await Promise.all([cargarCategorias(), cargarDestacados()]);
+    await cargarDestacados();
     cargando = false;
   });
 </script>
 
-<section class="container section">
-  <div class="hero">
-    <div>
-      <span class="hero-kicker">Equipamiento para motociclistas</span>
-      <h1>
-        Rueda seguro, <br />
-        <span class="grad">rueda con estilo</span>
-      </h1>
-      <p>
-        Cascos, guantes, chaquetas y accesorios de las mejores marcas para
-        protegerte en cada kilómetro.
-      </p>
-      <div class="hero-cta">
-        <button class="btn btn-primary" onclick={() => navigate('/catalogo')}>
-          Ver catálogo
-        </button>
-        <button class="btn btn-outline" onclick={() => navigate('/catalogo?categoria=cascos')}>
-          Cascos
-        </button>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="200" cy="150" r="130" fill="rgba(147,255,43,0.08)" />
-        <circle cx="200" cy="150" r="100" fill="rgba(147,255,43,0.06)" stroke="rgba(147,255,43,0.35)" stroke-width="2" stroke-dasharray="6 6" />
-        <path
-          d="M200 60c-40 0-70 30-70 70v20l-20 40c-4 8 2 18 11 18h158c9 0 15-10 11-18l-20-40v-20c0-40-30-70-70-70z"
-          fill="#1f1f26"
-          stroke="url(#g)"
-          stroke-width="3"
-        />
-        <path d="M155 180h90l-8-45h-74z" fill="#0a0a0c" stroke="#35353f" stroke-width="2" />
-        <rect x="150" y="200" width="100" height="14" rx="7" fill="#93FF2B" />
-        <rect x="120" y="230" width="160" height="10" rx="5" fill="rgba(147,255,43,0.5)" />
-        <path d="M210 55l14-14M230 55l6-18" stroke="#35353f" stroke-width="2" stroke-linecap="round" />
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#93FF2B" />
-            <stop offset="100%" stop-color="#b2ff5e" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-  </div>
-</section>
+<HeroCarousel />
 
 <section class="container section">
   <div class="section-head">
     <div>
-      <h2>Explora por categoría</h2>
-      <p>Encuentra todo lo que necesitas para tu moto y tu seguridad.</p>
+      <h2>Compra por sección</h2>
+      <p>Accesorios y repuestos para tu moto, organizados para encontrarlos rápido.</p>
     </div>
   </div>
-  <CategoryNav />
+
+  <div class="secciones-grid">
+    <a class="seccion-card seccion-accesorios" href="#/accesorios">
+      <span class="seccion-kicker">Estilo y equipamiento</span>
+      <h3>Accesorios</h3>
+      <p>Portaplacas, espejos, sliders, tapas, soportes y más para personalizar tu moto.</p>
+      <span class="seccion-cta">Ver accesorios →</span>
+    </a>
+
+    <a class="seccion-card seccion-repuestos" href="#/repuestos">
+      <span class="seccion-kicker">Mantenimiento</span>
+      <h3>Repuestos</h3>
+      <p>Bombas, filtros, calapies, maniguetas, cupulas y componentes de recambio.</p>
+      <span class="seccion-cta">Ver repuestos →</span>
+    </a>
+  </div>
 </section>
 
 <section class="container section">

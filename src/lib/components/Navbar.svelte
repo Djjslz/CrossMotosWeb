@@ -21,6 +21,8 @@
     <SearchAutocomplete onSearch={handleSearch} />
 
     <div class="nav-actions">
+      <a href="#/repuestos" class="nav-link">Repuestos</a>
+      <a href="#/accesorios" class="nav-link">Accesorios</a>
       <a href="#/admin" class="icon-btn" title="Panel de administración">
         <svg
           width="20"

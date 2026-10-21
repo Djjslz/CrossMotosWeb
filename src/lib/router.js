@@ -14,6 +14,8 @@ export function navigate(path) {
 export const routes = {
   home: '/',
   catalog: '/catalogo',
+  repuestos: '/repuestos',
+  accesorios: '/accesorios',
   product: (slug) => `/producto/${slug}`,
 };
 
@@ -35,4 +37,8 @@ export async function getDestacados() {
 
 export async function getCategorias() {
   return api.get('/categorias');
+}
+
+export async function getTiposRepuestos() {
+  return api.get('/productos/repuestos/tipos');
 }

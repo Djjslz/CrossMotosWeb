@@ -8,6 +8,8 @@
   import CartDrawer from './lib/components/CartDrawer.svelte';
   import Home from './lib/views/Home.svelte';
   import Catalog from './lib/views/Catalog.svelte';
+  import Repuestos from './lib/views/Repuestos.svelte';
+  import Accesorios from './lib/views/Accesorios.svelte';
   import ProductDetail from './lib/views/ProductDetail.svelte';
   import AdminLogin from './lib/views/AdminLogin.svelte';
   import AdminPanel from './lib/views/AdminPanel.svelte';
@@ -43,6 +45,10 @@
     <Home />
   {:else if route.path === '/catalogo'}
     <Catalog query={route.query} />
+  {:else if route.path === '/repuestos'}
+    <Repuestos query={route.query} />
+  {:else if route.path === '/accesorios'}
+    <Accesorios query={route.query} />
   {:else if route.path.startsWith('/producto/')}
     <ProductDetail slug={route.path.split('/')[2]} />
   {:else if route.path === '/admin'}
